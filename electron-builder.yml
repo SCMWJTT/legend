@@ -1,0 +1,33 @@
+appId: app.cynmark.legend
+productName: Legend
+copyright: Cynmark
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**
+  - package.json
+asarUnpack:
+  - node_modules/better-sqlite3/**
+  - node_modules/sharp/**
+  - node_modules/@img/**
+  - node_modules/exiftool-vendored*/**
+npmRebuild: false
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: Legend
+  artifactName: Legend-Setup-${version}.${ext}
+mac:
+  target: dmg
+  icon: build/icon.png
+publish: null

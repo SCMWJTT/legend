@@ -1,0 +1,49 @@
+{
+  "name": "legend",
+  "productName": "Legend",
+  "version": "0.1.0",
+  "description": "Legend: photo catalogue for Lightroom exports",
+  "author": "Cynmark",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dist": "electron-vite build && electron-builder --win --x64",
+    "dist:dir": "electron-vite build && electron-builder --dir"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.2.0",
+    "exiftool-vendored": "^39.4.0",
+    "sharp": "^0.34.0"
+  },
+  "devDependencies": {
+    "@tanstack/react-virtual": "^3.14.26",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/leaflet": "^1.9.20",
+    "@types/leaflet.markercluster": "^1.5.6",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.0",
+    "electron-vite": "^5.0.0",
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.0",
+    "zustand": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SCMWJTT/legend.git"
+  }
+}
