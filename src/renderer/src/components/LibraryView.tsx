@@ -418,7 +418,7 @@ function Grid({ visible }: { visible: Visible }) {
   const cols = Math.max(1, Math.floor((width - 24) / tileW))
   const realW = Math.floor((width - 24) / cols)
   const metaLines = ui.overlays.filter((o) => ['title', 'legendId', 'rawKey', 'date', 'shoot', 'location', 'status'].includes(o) || o.startsWith('h:')).length
-  const showMeta = Math.min(metaLines, 3)
+  const showMeta = Math.min(metaLines || (ui.overlays.includes('rating') ? 1 : 0), 3)
   const tileH = Math.round(realW * 0.78) + (showMeta ? 8 + showMeta * 16 : 0)
   const grouped = visible.groups.length > 1 || (visible.groups[0]?.label ?? '') !== ''
 
@@ -521,6 +521,16 @@ const Tile = memo(function Tile({ p, w, h, order, ctx }: { p: PhotoRow; w: numbe
       lines.push({ text: labels.join(', ') || '—', cls: 't2' })
     }
   }
+  // Stars sit at the right of the first text line, so they line up on every tile.
+  const stars = overlays.includes('rating') ? (
+    <div className={'stars' + (p.rating ? ' has' : '')} onMouseDown={(e) => e.stopPropagation()}>
+      <Stars value={p.rating} size={11} onChange={(n) => {
+        const s = useStore.getState()
+        const ids = s.selected.has(p.id) ? [...s.selected] : [p.id]
+        void act('editFields', ids, [{ field: 'rating', value: n }], `Rating ${n}`)
+      }} />
+    </div>
+  ) : null
   const noPos = p.lat === null && !p.noLocation
   const changed = !!p.exportedAt && p.modifiedAt > p.exportedAt
   return (
@@ -542,19 +552,14 @@ const Tile = memo(function Tile({ p, w, h, order, ctx }: { p: PhotoRow; w: numbe
             </div>
           )}
           {!overlays.includes('badges') && missing.length > 0 && <div className="badges"><span className="missing-dot" title={`Missing: ${missing.join(', ')}`} /></div>}
-          {overlays.includes('rating') && (
-            <div className={'stars' + (p.rating ? ' has' : '')} onMouseDown={(e) => e.stopPropagation()}>
-              <Stars value={p.rating} size={12} onChange={(n) => {
-                const s = useStore.getState()
-                const ids = s.selected.has(p.id) ? [...s.selected] : [p.id]
-                void act('editFields', ids, [{ field: 'rating', value: n }], `Rating ${n}`)
-              }} />
-            </div>
-          )}
         </div>
-        {lines.length > 0 && (
+        {(lines.length > 0 || stars) && (
           <div className="meta">
-            {lines.slice(0, 3).map((l, i) => <div key={i} className={l.cls}>{l.text}</div>)}
+            <div className="row1">
+              {lines[0] ? <div className={lines[0].cls}>{lines[0].text}</div> : <div />}
+              {stars}
+            </div>
+            {lines.slice(1, 3).map((l, i) => <div key={i} className={l.cls}>{l.text}</div>)}
           </div>
         )}
       </div>

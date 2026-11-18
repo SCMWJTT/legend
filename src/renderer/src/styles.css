@@ -232,12 +232,15 @@ textarea.field { resize: vertical; min-height: 64px; line-height: 1.5; }
 .tile-in:hover { background: var(--bg2); }
 .tile.sel .tile-in { background: var(--bg3); box-shadow: 0 0 0 1.5px var(--accent-ring); }
 .tile.focus .tile-in { box-shadow: 0 0 0 2px var(--accent); }
-.tile .img { flex: 1; min-height: 0; display: grid; place-items: center; padding: 9px; position: relative; }
-.tile img { max-width: 100%; max-height: 100%; border-radius: 3px; display: block; box-shadow: 0 2px 10px rgba(0,0,0,.4); opacity: 0; transition: opacity .25s; }
+.tile .img { flex: 1 1 0; min-height: 0; display: grid; place-items: center; position: relative; overflow: hidden; }
+/* The whole photo always fits inside its frame, portrait or landscape; nothing is cropped. */
+.tile img { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); object-fit: contain; display: block; filter: drop-shadow(0 2px 8px rgba(0,0,0,.45)); opacity: 0; transition: opacity .25s; }
 .tile img.ok { opacity: 1; }
 .tile .ph { width: 70%; height: 55%; border-radius: 4px; background: linear-gradient(110deg, var(--bg2) 30%, var(--bg3) 50%, var(--bg2) 70%); background-size: 200% 100%; animation: shimmer 1.6s infinite linear; }
 @keyframes shimmer { to { background-position: -200% 0; } }
-.tile .meta { padding: 0 10px 8px; font-size: 11.5px; line-height: 1.35; min-height: 0; }
+.tile .meta { padding: 0 10px 8px; font-size: 11.5px; line-height: 1.35; flex: none; }
+.tile .meta .row1 { display: flex; align-items: center; gap: 6px; height: 16px; }
+.tile .meta .row1 > div:first-child { flex: 1; min-width: 0; }
 .tile .meta .t1 { color: var(--text); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .tile .meta .t2 { color: var(--text3); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: var(--mono); font-size: 10.5px; }
 .tile .badges { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 4px; pointer-events: none; }
@@ -249,9 +252,8 @@ textarea.field { resize: vertical; min-height: 64px; line-height: 1.5; }
 .badge.bad { color: var(--bad); }
 .badge.acc { color: var(--accent2); }
 .badge.r { margin-left: auto; }
-.tile .stars {
-  position: absolute; bottom: 6px; left: 0; right: 0; display: flex; justify-content: center; gap: 1px; opacity: 0; transition: opacity .15s;
-}
+.tile .stars { flex: none; display: flex; opacity: 0; transition: opacity .15s; }
+.tile .stars .ratingbar { gap: 0; }
 .tile .stars.has { opacity: 1; }
 .tile:hover .stars { opacity: 1; }
 .star { border: 0; background: none; padding: 1px; color: var(--text4); line-height: 0; }
